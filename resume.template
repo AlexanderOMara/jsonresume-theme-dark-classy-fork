@@ -306,12 +306,12 @@ blockquote .name {
 				<h1>{{basics.name}}</h1>
 				<h3 class="label">{{basics.label}}</h3>
 				<ul id="contact" class="contact-list list-lines">
-				{{#phoneBool}}
-					<li class="contact-header">{{basics.phone}}</li>
-				{{/phoneBool}}
 				{{#emailBool}}
 					<li class="contact-header"><a href="mailto:{{basics.email}}">{{basics.email}}</a></li>
 				{{/emailBool}}
+				{{#phoneBool}}
+					<li class="contact-header">{{basics.phone}}</li>
+				{{/phoneBool}}
 				{{#websiteBool}}
 					<li class="contact-header"><a href="{{basics.website}}">{{basics.website}}</a></li>
 				{{/websiteBool}}
