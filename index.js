@@ -70,19 +70,19 @@ function render(resumeObject) {
 	if (resumeObject.basics.email) {
 		resumeObject.emailBool = true;
 	}
-	
+
 	if (resumeObject.basics.phone) {
 		resumeObject.phoneBool = true;
 	}
-	
+
 	if (resumeObject.basics.website) {
 		resumeObject.websiteBool = true;
 	}
-	
+
 	if (resumeObject.basics.summary) {
 		resumeObject.aboutBool = true;
 	}
-	
+
 	if (resumeObject.basics.profiles) {
 		if (resumeObject.basics.profiles[0] && resumeObject.basics.profiles[0].network) {
 			_.each(resumeObject.basics.profiles, function(w) {
@@ -105,7 +105,7 @@ function render(resumeObject) {
 			});
 		}
 	}
-	
+
 	if (resumeObject.work) {
 		if (resumeObject.work[0] && resumeObject.work[0].company) {
 			resumeObject.workBool = true;
@@ -128,24 +128,56 @@ function render(resumeObject) {
 				else { 
 					w.endDateYear = 'Present';
 				}
-				if (w.highlights && w.highlights[0] && w.highlights[0] !== '') {
+				if (w.highlights && w.highlights[0]) {
 					w.workHighlights = true;
 				}
 			});
 		}
 	}
-	
+
+	if (resumeObject.volunteer) {
+		if (resumeObject.volunteer[0] && resumeObject.volunteer[0].position) {
+			resumeObject.volunteerBool = true;
+			_.each(resumeObject.volunteer, function(e) {
+				if (e.startDate) {
+					date = parseDate(e.startDate);
+					e.startDateYear = date.year || '';
+					if (date.month) {
+						e.startDateMonth = getMonth(date.month) + ' ';
+					}
+				}
+				if (e.endDate) {
+					date = parseDate(e.endDate);
+					e.endDateYear = date.year || '';
+					if (date.month) {
+						e.endDateMonth = getMonth(date.month) + ' ';
+					}
+					if (e.endDateYear > curyear) {
+						e.endDateYear += ' (expected)';
+					}
+				}
+				else {
+					e.endDateYear = 'Present';
+					e.endDateMonth = '';
+				}
+				if (e.highlights && e.highlights[0]) {
+					e.volunteerHighlights = true;
+				}
+			});
+		}
+	}
+
 	if (resumeObject.education) {
 		if (resumeObject.education[0] && resumeObject.education[0].institution) {
 			resumeObject.educationBool = true;
 			_.each(resumeObject.education, function(e) {
 				var date;
-			    if (!e.area || !e.studyType) {
+				if (!e.area || !e.studyType) {
 					e.educationDetail = (e.area || '') + (e.studyType || '');
-			    }
+				}
 				else {
 					e.educationDetail = e.area + ', ' + e.studyType;
-			    }
+				}
 				if (e.startDate) {
 					date = parseDate(e.startDate);
 					e.startDateYear = date.year || '';
@@ -167,13 +199,16 @@ function render(resumeObject) {
 					e.endDateYear = 'Present';
 					e.endDateMonth = '';
 				}
-				if (e.courses && e.courses[0] && e.courses[0] !== '') {
+				if (e.courses && e.courses[0]) {
 					e.educationCourses = true;
+				}
+				if (e.awards && e.awards[0]) {
+					e.educationAwards = true;
 				}
 			});
 		}
 	}
-	
+
 	if (resumeObject.awards) {
 		if (resumeObject.awards[0] && resumeObject.awards[0].title) {
 			resumeObject.awardsBool = true;
@@ -187,7 +222,7 @@ function render(resumeObject) {
 			});
 		}
 	}
-	
+
 	if (resumeObject.publications) {
 		if (resumeObject.publications[0] && resumeObject.publications[0].name) {
 			resumeObject.publicationsBool = true;
@@ -201,34 +236,34 @@ function render(resumeObject) {
 			});
 		}
 	}
-	
+
 	if (resumeObject.skills) {
 		if (resumeObject.skills[0] && resumeObject.skills[0].name) {
 			resumeObject.skillsBool = true;
 		}
 	}
-	
+
 	if (resumeObject.interests) {
 		if (resumeObject.interests[0] && resumeObject.interests[0].name) {
 			resumeObject.interestsBool = true;
 		}
 	}
-	
+
 	if (resumeObject.languages) {
 		if (resumeObject.languages[0] && resumeObject.languages[0].language) {
 			resumeObject.languagesBool = true;
 		}
 	}
-	
+
 	if (resumeObject.references) {
 		if (resumeObject.references[0] && resumeObject.references[0].name) {
 			resumeObject.referencesBool = true;
 		}
 	}
-	
+
 	var theme = fs.readFileSync(__dirname + '/resume.template', 'utf8');
 	var resumeHTML = Mustache.render(theme, resumeObject);
-	
+
 	return resumeHTML;
 }
 module.exports = {
