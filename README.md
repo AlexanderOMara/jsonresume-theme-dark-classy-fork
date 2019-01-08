@@ -1,4 +1,4 @@
-#jsonresume-theme-classy-responsive
+# jsonresume-theme-classy-responsive
 
 An uber-classy theme for JSONResume, now responsive.
 
